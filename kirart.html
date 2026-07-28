@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirart — Ilustración & Comisiones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --surface: #111827;
+            --surface-2: #1e293b;
+            --text: #f1f5f9;
+            --text-2: #94a3b8;
+            --accent: #e63946;
+            --accent-2: #3b82f6;
+            --border: rgba(255,255,255,0.06);
+            --shadow: rgba(0,0,0,0.5);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-2: #f1f5f9;
+            --text: #0f172a;
+            --text-2: #64748b;
+            --accent: #c1121f;
+            --accent-2: #1e40af;
+            --border: rgba(0,0,0,0.08);
+            --shadow: rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(var(--bg), 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        nav {
+            max-width: 1400px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-decoration: none; letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex; gap: 2rem; list-style: none; align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-2); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            position: relative; transition: var(--transition); cursor: pointer; white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .nav-actions { display: flex; gap: 1rem; align-items: center; }
+
+        .icon-btn {
+            width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+            background: var(--surface); color: var(--text); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); font-size: 1.1rem;
+        }
+
+        .icon-btn:hover { background: var(--surface-2); transform: scale(1.05); }
+
+        .cart-count {
+            position: absolute; top: -2px; right: -2px; background: var(--accent);
+            color: white; font-size: 0.65rem; width: 18px; height: 18px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+        }
+
+        .mobile-menu-btn { display: none; }
+
+        section { display: none; animation: fadeIn 0.5s ease; min-height: 100vh; padding-top: 80px; }
+        section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        .hero {
+            min-height: 90vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; position: relative; overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute; inset: 0; opacity: 0.15;
+            background: radial-gradient(circle at 30% 50%, var(--accent), transparent 50%),
+                        radial-gradient(circle at 70% 50%, var(--accent-2), transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 800px; padding: 2rem; }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero p { font-size: 1.25rem; color: var(--text-2); margin-bottom: 2.5rem; max-width: 600px; margin-inline: auto; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.9rem 2rem;
+            border-radius: 100px; border: none; font-family: inherit; font-weight: 600;
+            font-size: 0.95rem; cursor: pointer; transition: var(--transition); text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: white; box-shadow: 0 10px 30px -10px var(--accent);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -10px var(--accent); }
+
+        .btn-secondary {
+            background: var(--surface); color: var(--text); border: 1px solid var(--border);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover { background: var(--surface-2); }
+
+        .filters {
+            display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem; border-radius: 100px; border: 1px solid var(--border);
+            background: var(--surface); color: var(--text-2); font-family: inherit;
+            font-size: 0.85rem; cursor: pointer; transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: white; border-color: transparent;
+        }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .art-card {
+            background: var(--surface); border-radius: var(--radius); overflow: hidden;
+            border: 1px solid var(--border); cursor: pointer; transition: var(--transition);
+            position: relative;
+        }
+
+        .art-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px var(--shadow); }
+
+        .art-card img {
+            width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block;
+            transition: transform 0.5s;
+        }
+
+        .art-card:hover img { transform: scale(1.05); }
+
+        .art-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column;
+            justify-content: flex-end; padding: 1.5rem;
+        }
+
+        .art-card:hover .art-overlay { opacity: 1; }
+
+        .art-title { font-size: 1.1rem; font-weight: 600; color: white; margin-bottom: 0.25rem; }
+        .art-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .art-tag {
+            font-size: 0.7rem; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.15);
+            color: white; border-radius: 100px; backdrop-filter: blur(10px);
+        }
+
+        .art-price {
+            position: absolute; top: 1rem; right: 1rem;
+            background: var(--accent); color: white; padding: 0.4rem 1rem;
+            border-radius: 100px; font-weight: 700; font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .lightbox {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            align-items: center; justify-content: center; padding: 2rem;
+        }
+
+        .lightbox.active { display: flex; }
+
+        .lightbox-content {
+            max-width: 90vw; max-height: 85vh; border-radius: var(--radius); overflow: hidden;
+            position: relative;
+        }
+
+        .lightbox img { max-width: 100%; max-height: 85vh; object-fit: contain; display: block; }
+
+        .lightbox-info {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 3rem 2rem 2rem; color: white;
+        }
+
+        .lightbox-close {
+            position: absolute; top: 2rem; right: 2rem; width: 50px; height: 50px;
+            border-radius: 50%; background: rgba(255,255,255,0.1); border: none;
+            color: white; font-size: 1.5rem; cursor: pointer; backdrop-filter: blur(10px);
+            transition: var(--transition); z-index: 10;
+        }
+
+        .lightbox-close:hover { background: rgba(255,255,255,0.2); transform: rotate(90deg); }
+
+        .lightbox-actions { display: flex; gap: 1rem; margin-top: 1rem; }
+
+        .shop-item {
+            background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+            padding: 1.5rem; display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .shop-item:hover { border-color: var(--accent); transform: translateX(5px); }
+
+        .shop-item img { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; }
+
+        .shop-info { flex: 1; }
+
+        .shop-info h3 { margin-bottom: 0.5rem; font-size: 1.2rem; }
+
+        .shop-meta { color: var(--text-2); font-size: 0.9rem; margin-bottom: 0.75rem; }
+
+        .shop-price { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+        .cart-sidebar {
+            position: fixed; top: 0; right: -450px; width: 450px; max-width: 100%;
+            height: 100vh; background: var(--surface); border-left: 1px solid var(--border);
+            z-index: 1500; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+
+        .cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+
+        .cart-item {
+            display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+
+        .cart-item-info { flex: 1; }
+
+        .cart-item-title { font-weight: 600; margin-bottom: 0.25rem; }
+
+        .cart-item-price { color: var(--accent); font-weight: 700; }
+
+        .cart-footer {
+            padding: 1.5rem 2rem; border-top: 1px solid var(--border);
+            background: var(--surface-2);
+        }
+
+        .cart-total {
+            display: flex; justify-content: space-between; font-size: 1.25rem;
+            font-weight: 700; margin-bottom: 1.5rem;
+        }
+
+        .cart-empty { text-align: center; color: var(--text-2); padding: 3rem 0; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 1400; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+
+        .overlay.active { opacity: 1; pointer-events: all; }
+
+        .form-group { margin-bottom: 1.5rem; }
+
+        .form-group label {
+            display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 0.9rem 1rem; border-radius: 12px;
+            border: 1px solid var(--border); background: var(--surface-2);
+            color: var(--text); font-family: inherit; font-size: 0.95rem;
+            transition: var(--transition); outline: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--accent); box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+        .commission-form {
+            max-width: 800px; margin: 0 auto;
+            background: var(--surface); padding: 2.5rem; border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+
+        .blog-card {
+            background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+            overflow: hidden; cursor: pointer; transition: var(--transition);
+        }
+
+        .blog-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px var(--shadow); }
+
+        .blog-card-header { padding: 1.5rem 1.5rem 0; }
+
+        .blog-card-date { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+
+        .blog-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+
+        .blog-card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.6; padding: 0 1.5rem 1.5rem; }
+
+        .blog-post {
+            max-width: 800px; margin: 0 auto; background: var(--surface);
+            padding: 3rem; border-radius: var(--radius); border: 1px solid var(--border);
+        }
+
+        .blog-post h1 { margin-bottom: 1rem; }
+
+        .blog-post-meta { color: var(--text-2); margin-bottom: 2rem; font-size: 0.9rem; }
+
+        .blog-post-content { line-height: 1.8; color: var(--text-2); }
+
+        .blog-post-content h2, .blog-post-content h3 { color: var(--text); margin: 2rem 0 1rem; }
+
+        .blog-post-content p { margin-bottom: 1.25rem; }
+
+        .blog-post-content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+            max-width: 1100px; margin: 0 auto; align-items: start;
+        }
+
+        .contact-info {
+            background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+            padding: 2.5rem;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem; margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .contact-info p { color: var(--text-2); margin-bottom: 1.5rem; line-height: 1.7; }
+
+        .contact-item {
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+            padding: 1rem; border-radius: 12px; background: var(--surface-2);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover { transform: translateX(5px); border-left: 3px solid var(--accent); }
+
+        .contact-item-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem;
+        }
+
+        .contact-item-info { flex: 1; }
+
+        .contact-item-label { font-size: 0.8rem; color: var(--text-2); margin-bottom: 0.15rem; }
+
+        .contact-item-value { font-weight: 600; color: var(--text); }
+
+        .contact-item a { color: var(--text); text-decoration: none; }
+
+        .contact-item a:hover { color: var(--accent); }
+
+        .contact-image {
+            width: 100%; aspect-ratio: 1; border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex; align-items: center; justify-content: center; font-size: 4rem;
+            position: relative; overflow: hidden;
+        }
+
+        .contact-image::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=600&fit=crop') center/cover;
+            opacity: 0.3;
+        }
+
+        .social-links { display: flex; gap: 1rem; margin-top: 2rem; }
+
+        .social-link {
+            width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border);
+            background: var(--surface-2); display: flex; align-items: center; justify-content: center;
+            color: var(--text); text-decoration: none; transition: var(--transition); font-size: 1.2rem;
+        }
+
+        .social-link:hover { background: var(--accent); color: white; transform: translateY(-3px); }
+
+        .whatsapp-float {
+            position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px;
+            background: #25d366; color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; text-decoration: none; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+            z-index: 100; transition: var(--transition); animation: pulse 2s infinite;
+        }
+
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+        }
+
+        .section-header { text-align: center; margin-bottom: 3rem; }
+
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+        .section-header p { color: var(--text-2); font-size: 1.1rem; }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent);
+            background: none; border: none; font-family: inherit; font-size: 0.9rem;
+            cursor: pointer; margin-bottom: 2rem; font-weight: 600;
+        }
+
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--surface-2); color: var(--text); padding: 1rem 2rem;
+            border-radius: 100px; border: 1px solid var(--border); z-index: 3000;
+            opacity: 0; transition: all 0.4s; font-weight: 500; box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: flex; }
+            .hero h1 { font-size: 2.5rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .shop-item { flex-direction: column; text-align: center; }
+            .form-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .cart-sidebar { width: 100%; }
+            .blog-grid { grid-template-columns: 1fr; }
+            .commission-form { padding: 1.5rem; }
+            .blog-post { padding: 1.5rem; }
+            .contact-info { padding: 1.5rem; }
+            .tools-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .tips-grid { grid-template-columns: 1fr !important; }
+        }
+
+        .mobile-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface);
+            border-top: 1px solid var(--border); z-index: 999; display: none;
+            justify-content: space-around; padding: 0.75rem 0;
+        }
+
+        .mobile-nav a {
+            color: var(--text-2); text-decoration: none; font-size: 0.7rem;
+            display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .mobile-nav a.active { color: var(--accent); }
+
+        .mobile-nav svg { width: 24px; height: 24px; }
+
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; }
+            section { padding-bottom: 80px; }
+        }
+
+        .tag {
+            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px;
+            background: rgba(230, 57, 70, 0.1); color: var(--accent);
+            font-size: 0.8rem; font-weight: 600; margin-right: 0.5rem;
+        }
+
+        .price-table {
+            width: 100%; border-collapse: collapse; margin: 2rem 0;
+        }
+
+        .price-table th, .price-table td {
+            padding: 1rem; text-align: left; border-bottom: 1px solid var(--border);
+        }
+
+        .price-table th { color: var(--text-2); font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .price-table td { font-weight: 600; }
+
+        .status-badge {
+            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px;
+            font-size: 0.75rem; font-weight: 700;
+        }
+
+        .status-open { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .status-closed { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        /* ========== TOOLS SECTION (BitCriollo style) ========== */
+        .tools-section {
+            max-width: 1000px; margin: 0 auto;
+        }
+
+        .tools-prompt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-2);
+            margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+        }
+
+        .tools-prompt .comment { color: #64748b; font-style: italic; }
+        .tools-prompt .cmd { color: var(--accent-2); font-weight: 600; }
+        .tools-prompt .arg { color: var(--accent); }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: default;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.15);
+        }
+
+        .tool-card:hover::before { opacity: 1; }
+
+        .tool-abbr {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .tool-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-desc {
+            font-size: 0.75rem;
+            color: var(--text-2);
+            line-height: 1.4;
+        }
+
+        .tool-tag {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-digital { background: rgba(59, 130, 246, 0.12); color: var(--accent-2); }
+        .tag-trad { background: rgba(230, 57, 70, 0.12); color: var(--accent); }
+        .tag-3d { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
+
+        /* ========== TIPS SECTION (La Vallita style) ========== */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tip-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .tip-card:hover {
+            border-color: var(--accent-2);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px var(--shadow);
+        }
+
+        .tip-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        }
+
+        .tip-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .tip-card p {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .tip-card ul {
+            margin-top: 0.75rem;
+            padding-left: 1.25rem;
+            color: var(--text-2);
+            font-size: 0.9rem;
+        }
+
+        .tip-card li {
+            margin-bottom: 0.4rem;
+        }
+
+        .tip-highlight {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .tip-quote {
+            margin-top: 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent);
+            font-style: italic;
+            color: var(--text-2);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="#" class="logo" onclick="showSection('home')">Kirart</a>
+        <ul class="nav-links">
+            <li><a onclick="showSection('home')" class="nav-link active" data-section="home">Inicio</a></li>
+            <li><a onclick="showSection('gallery')" class="nav-link" data-section="gallery">Galería</a></li>
+            <li><a onclick="showSection('shop')" class="nav-link" data-section="shop">Tienda</a></li>
+            <li><a onclick="showSection('commissions')" class="nav-link" data-section="commissions">Comisiones</a></li>
+            <li><a onclick="showSection('tools')" class="nav-link" data-section="tools">Herramientas</a></li>
+            <li><a onclick="showSection('tips')" class="nav-link" data-section="tips">Tips</a></li>
+            <li><a onclick="showSection('blog')" class="nav-link" data-section="blog">Blog</a></li>
+            <li><a onclick="showSection('contact')" class="nav-link" data-section="contact">Contacto</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="toggleTheme()" title="Cambiar tema">
+                <span id="theme-icon">☀️</span>
+            </button>
+            <button class="icon-btn" onclick="toggleCart()" style="position:relative;" title="Carrito">
+                🛒
+                <span class="cart-count" id="cart-count" style="display:none;">0</span>
+            </button>
+            <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+</header>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+        <h3>Tu Carrito</h3>
+        <button class="icon-btn" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <div class="cart-empty">El carrito está vacío</div>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cart-total">$0.00</span>
+        </div>
+        <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="checkout()">
+            Pedir por WhatsApp
+        </button>
+    </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <img id="lightbox-img" src="" alt="">
+        <div class="lightbox-info">
+            <h3 id="lightbox-title"></h3>
+            <p id="lightbox-desc"></p>
+            <div class="lightbox-actions">
+                <button class="btn btn-primary" id="lightbox-buy" onclick="">Añadir al carrito</button>
+                <a id="lightbox-wa" href="" target="_blank" class="btn btn-secondary">Consultar por WhatsApp</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- HOME -->
+<section id="home" class="active">
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Kirart</h1>
+            <p>Ilustración cubana. Dando color a ideas, personajes y mundos que solo existen en la imaginación... hasta ahora.</p>
+            <div>
+                <a onclick="showSection('gallery')" class="btn btn-primary">Ver Galería →</a>
+                <a onclick="showSection('commissions')" class="btn btn-secondary">Encargar Dibujo</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div class="section-header">
+            <h2>Obras Destacadas</h2>
+            <p>Una selección de piezas disponibles y trabajos recientes</p>
+        </div>
+        <div class="gallery-grid" id="featured-grid"></div>
+    </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+    <div class="container">
+        <div class="section-header">
+            <h2>Galería</h2>
+            <p>Explora ilustraciones por categoría</p>
+        </div>
+        <div class="filters" id="gallery-filters">
+            <button class="filter-btn active" onclick="filterGallery('all')">Todo</button>
+            <button class="filter-btn" onclick="filterGallery('fanart')">Fanart</button>
+            <button class="filter-btn" onclick="filterGallery('original')">Original</button>
+            <button class="filter-btn" onclick="filterGallery('retrato')">Retratos</button>
+            <button class="filter-btn" onclick="filterGallery('concept')">Concept Art</button>
+        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tienda</h2>
+            <p>Dibujos originales y prints disponibles para compra inmediata</p>
+        </div>
+        <div id="shop-list"></div>
+    </div>
+</section>
+
+<!-- COMMISSIONS -->
+<section id="commissions">
+    <div class="container">
+        <div class="section-header">
+            <h2>Comisiones</h2>
+            <p>¿Tienes una idea en mente? Hagámosla realidad</p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto 3rem; text-align: center;">
+            <span class="status-badge status-open">COMISIONES ABIERTAS</span>
+            <p style="margin-top: 1rem; color: var(--text-2);">
+                Actualmente tengo <strong>3 slots disponibles</strong>. 
+                Los tiempos de entrega varían según complejidad.
+            </p>
+        </div>
+
+        <div style="max-width: 900px; margin: 0 auto 3rem;">
+            <h3 style="margin-bottom: 1.5rem; text-align: center;">Tabla de Precios (USD)</h3>
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Precio base</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sketch</td>
+                        <td>Boceto a lápiz/digital limpio</td>
+                        <td style="color: var(--accent);">$15</td>
+                    </tr>
+                    <tr>
+                        <td>Lineart</td>
+                        <td>Tintado limpio sin color</td>
+                        <td style="color: var(--accent);">$25</td>
+                    </tr>
+                    <tr>
+                        <td>Flat Color</td>
+                        <td>Color plano + sombras básicas</td>
+                        <td style="color: var(--accent);">$40</td>
+                    </tr>
+                    <tr>
+                        <td>Full Render</td>
+                        <td>Ilustración completa con fondo simple</td>
+                        <td style="color: var(--accent);">$80</td>
+                    </tr>
+                    <tr>
+                        <td>Escena Compleja</td>
+                        <td>Personaje + fondo detallado</td>
+                        <td style="color: var(--accent);">$150+</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align: center; color: var(--text-2); font-size: 0.9rem;">
+                * Precios pueden variar según complejidad, uso comercial y extras.
+            </p>
+        </div>
+
+        <div class="commission-form">
+            <h3 style="margin-bottom: 1.5rem;">Solicitud de Comisión</h3>
+            <form onsubmit="submitCommission(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nombre / Alias</label>
+                        <input type="text" required placeholder="Cómo te gusta que te llamen">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" required placeholder="tu@email.com">
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tipo de comisión</label>
+                        <select required>
+                            <option value="">Selecciona...</option>
+                            <option>Sketch</option>
+                            <option>Lineart</option>
+                            <option>Flat Color</option>
+                            <option>Full Render</option>
+                            <option>Escena Compleja</option>
+                            <option>Otro / No estoy seguro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Uso previsto</label>
+                        <select>
+                            <option>Personal</option>
+                            <option>Comercial</option>
+                            <option>Regalo</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Referencia visual (URL)</label>
+                    <input type="url" placeholder="https://... (opcional)">
+                </div>
+                <div class="form-group">
+                    <label>Descripción detallada</label>
+                    <textarea rows="5" required placeholder="Describe tu personaje, pose, expresión, paleta de colores, fondo... ¡cuanto más detalle, mejor!"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    Enviar Solicitud
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- TOOLS (BitCriollo style) -->
+<section id="tools">
+    <div class="container">
+        <div class="section-header">
+            <h2>Herramientas</h2>
+            <p>Software y materiales que uso para crear</p>
+        </div>
+
+        <div class="tools-section">
+            <div class="tools-prompt">
+                <span class="comment">// HERRAMIENTAS_DIGITALES</span><br>
+                <span class="cmd">kiralizt@kirart</span>:<span class="arg">~/estudio</span>$ ls -la software/<br>
+                <span style="color: var(--text-2);">total 8 herramientas activas</span>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-abbr">Kr</div>
+                    <div class="tool-name">Krita</div>
+                    <div class="tool-desc">Pintura digital principal. Libre y potente.</div>
+                    <span class="tool-tag tag-digital">digital</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">Gi</div>
+                    <div class="tool-name">GIMP</div>
+                    <div class="tool-desc">Retoques, ajustes y manipulación.</div>
+                    <span class="tool-tag tag-digital">digital</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">In</div>
+                    <div class="tool-name">Inkscape</div>
+                    <div class="tool-desc">Vectores, logos y líneas limpias.</div>
+                    <span class="tool-tag tag-digital">digital</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">Bl</div>
+                    <div class="tool-name">Blender</div>
+                    <div class="tool-desc">3D para referencias y escenas.</div>
+                    <span class="tool-tag tag-3d">3d</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">Ca</div>
+                    <div class="tool-name">Canson</div>
+                    <div class="tool-desc">Papel para bocetos tradicionales.</div>
+                    <span class="tool-tag tag-trad">tradicional</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">Pr</div>
+                    <div class="tool-name">Prismacolor</div>
+                    <div class="tool-desc">Lápices de colores profesionales.</div>
+                    <span class="tool-tag tag-trad">tradicional</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">XP</div>
+                    <div class="tool-name">XP-Pen</div>
+                    <div class="tool-desc">Tableta gráfica Artist 15.6 Pro.</div>
+                    <span class="tool-tag tag-digital">hardware</span>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-abbr">Li</div>
+                    <div class="tool-name">Linux Mint</div>
+                    <div class="tool-desc">Sistema operativo del estudio.</div>
+                    <span class="tool-tag tag-digital">sistema</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TIPS (La Vallita style) -->
+<section id="tips">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tips para Clientes</h2>
+            <p>Cómo pedir una comisión y sacarle el máximo provecho</p>
+        </div>
+
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-icon">📝</div>
+                <h3>Cómo describir tu personaje</h3>
+                <p>
+                    No hace falta ser escritor. Con estas 5 cosas basta:
+                </p>
+                <ul>
+                    <li><strong>Apariencia física:</strong> edad, tono de piel, cabello, ojos, altura.</li>
+                    <li><strong>Ropa / armadura:</strong> estilo, colores dominantes, accesorios clave.</li>
+                    <li><strong>Expresión / pose:</strong> ¿sonríe, pelea, medita? ¿de frente o de perfil?</li>
+                    <li><strong>Personalidad:</strong> 3 adjetivos (ej: "tímido, leal, melancólico").</li>
+                    <li><strong>Referencias:</strong> imágenes de Pinterest, screenshots, otros dibujos.</li>
+                </ul>
+                <div class="tip-quote">"Entre más clara sea la referencia, más fiel será el resultado."</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">🎨</div>
+                <h3>Qué referencias enviar</h3>
+                <p>
+                    Las referencias son el mapa. Sin ellas, navego a ciegas. Esto es lo ideal:
+                </p>
+                <ul>
+                    <li><strong>Referencia del personaje:</strong> dibujos anteriores, descripciones de texto, fotos de actores.</li>
+                    <li><strong>Referencia de pose:</strong> una foto o maniquí digital en la pose deseada.</li>
+                    <li><strong>Paleta de colores:</strong> hex codes o una imagen con los tonos.</li>
+                    <li><strong>Estilo deseado:</strong> ¿mi estilo habitual o algo más anime/realista/chibi?</li>
+                </ul>
+                <div class="tip-highlight">💡 Tip: Un collage en Canva o Pinterest board funciona perfecto.</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">⏳</div>
+                <h3>Tiempos de entrega reales</h3>
+                <p>
+                    La calidad lleva tiempo. Estos son los plazos estimados una vez confirmado el pago:
+                </p>
+                <ul>
+                    <li><strong>Sketch:</strong> 2–4 días hábiles.</li>
+                    <li><strong>Lineart:</strong> 4–7 días hábiles.</li>
+                    <li><strong>Flat Color:</strong> 1–2 semanas.</li>
+                    <li><strong>Full Render:</strong> 2–4 semanas.</li>
+                    <li><strong>Escena Compleja:</strong> 1–2 meses.</li>
+                </ul>
+                <div class="tip-quote">"Los tiempos pueden variar si hay lista de espera. Siempre aviso antes de confirmar."</div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">💬</div>
+                <h3>El proceso de revisiones</h3>
+                <p>
+                    No te quedes con dudas. El proceso incluye etapas donde puedes pedir cambios:
+                </p>
+                <ul>
+                    <li><strong>Sketch inicial:</strong> aquí se ajusta pose, composición y proporciones. <em>Cambios gratis.</em></li>
+                    <li><strong>Lineart:</strong> se confirman detalles de ropa y expresión. <em>Cambios menores gratis.</em></li>
+                    <li><strong>Color base:</strong> se valida paleta y luces. <em>Un ajuste gratis.</em></li>
+                    <li><strong>Render final:</strong> solo retoques menores. <em>Cambios mayores = costo extra.</em></li>
+                </ul>
+                <div class="tip-highlight">⚠️ Importante: Cambios drásticos en etapas avanzadas pueden costar extra.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+    <div class="container">
+        <div id="blog-list-view">
+            <div class="section-header">
+                <h2>Blog</h2>
+                <p>Proceso creativo, tutoriales y pensamientos de una ilustradora cubana</p>
+            </div>
+            <div class="blog-grid" id="blog-grid"></div>
+        </div>
+        <div id="blog-post-view" style="display: none;">
+            <div class="container">
+                <button class="back-btn" onclick="showBlogList()">← Volver al blog</button>
+                <article class="blog-post" id="blog-post-content"></article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <div class="container">
+        <div class="section-header">
+            <h2>Contacto</h2>
+            <p>Conecta conmigo. Trabajemos juntos.</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Sobre KiraLizt</h3>
+                <p>
+                    ¡Hola! Soy KiraLizt, ilustradora nacida en Cuba. Dibujo desde que tengo memoria, 
+                    y lo que empezó como un hobby se convirtió en mi forma de vida y de expresión.
+                </p>
+                <p>
+                    Mi trabajo se centra en <strong>ilustración de personajes</strong>, 
+                    <strong>concept art</strong> y <strong>retratos digitales</strong>. 
+                    Me inspiran los videojuegos, el anime, la música y los colores vibrantes de mi isla.
+                </p>
+                <p>
+                    Actualmente trabajo de forma independiente, aceptando comisiones personalizadas 
+                    y vendiendo prints de mis obras. Cada dibujo es una parte de mí que comparto contigo.
+                </p>
+
+                <div class="contact-item">
+                    <div class="contact-item-icon">📱</div>
+                    <div class="contact-item-info">
+                        <div class="contact-item-label">WhatsApp</div>
+                        <div class="contact-item-value"><a href="https://wa.me/5356870519" target="_blank">+53 56870519</a></div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-item-icon">📧</div>
+                    <div class="contact-item-info">
+                        <div class="contact-item-label">Email</div>
+                        <div class="contact-item-value"><a href="mailto:contacto@kirart.cu">contacto@kirart.cu</a></div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-item-icon">📍</div>
+                    <div class="contact-item-info">
+                        <div class="contact-item-label">Ubicación</div>
+                        <div class="contact-item-value">Cuba · Disponible para trabajo remoto</div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-item-icon">⏱️</div>
+                    <div class="contact-item-info">
+                        <div class="contact-item-label">Horario de respuesta</div>
+                        <div class="contact-item-value">24-48 horas (GMT-4)</div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Instagram">📷</a>
+                    <a href="#" class="social-link" title="Twitter/X">🐦</a>
+                    <a href="#" class="social-link" title="TikTok">🎵</a>
+                    <a href="#" class="social-link" title="DeviantArt">🖌️</a>
+                    <a href="https://wa.me/5356870519" target="_blank" class="social-link" title="WhatsApp" style="background: #25d366; color: white;">💬</a>
+                </div>
+            </div>
+
+            <div>
+                <div class="contact-image">🎨</div>
+                <div style="margin-top: 2rem; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 2rem;">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">¿Trabajamos juntos?</h3>
+                    <p style="color: var(--text-2); margin-bottom: 1.5rem;">
+                        Estoy abierta a colaboraciones, proyectos freelance, 
+                        comisiones personalizadas y licencias de mis obras.
+                    </p>
+                    <a href="https://wa.me/5356870519" target="_blank" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Escríbeme por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/5356870519" target="_blank" class="whatsapp-float" title="Escríbeme por WhatsApp">💬</a>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav">
+    <a onclick="showSection('home')" class="active" data-section="home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Inicio
+    </a>
+    <a onclick="showSection('gallery')" data-section="gallery">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        Galería
+    </a>
+    <a onclick="showSection('shop')" data-section="shop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        Tienda
+    </a>
+    <a onclick="showSection('commissions')" data-section="commissions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+        Encargos
+    </a>
+    <a onclick="showSection('contact')" data-section="contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        Contacto
+    </a>
+</nav>
+
+<script>
+const artworks = [
+    { id: 1, title: "Cyberpunk Dreams", category: "concept", price: 45, image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=750&fit=crop", tags: ["Sci-Fi", "Digital"], featured: true },
+    { id: 2, title: "Retrato Étnico", category: "retrato", price: 60, image: "https://images.unsplash.com/photo-1549490349-8643362247b5?w=600&h=750&fit=crop", tags: ["Retrato", "Color"], featured: true },
+    { id: 3, title: "Magical Girl", category: "fanart", price: 35, image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&h=750&fit=crop", tags: ["Anime", "Fanart"], featured: true },
+    { id: 4, title: "Paisaje Cubano", category: "original", price: 50, image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&h=750&fit=crop", tags: ["Original", "Naturaleza"], featured: false },
+    { id: 5, title: "Mecha Warrior", category: "concept", price: 70, image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&h=750&fit=crop", tags: ["Mecha", "Concept"], featured: false },
+    { id: 6, title: "Bailarina", category: "original", price: 40, image: "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=600&h=750&fit=crop", tags: ["Original", "Figura"], featured: true },
+    { id: 7, title: "Personaje D&D", category: "fanart", price: 55, image: "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?w=600&h=750&fit=crop", tags: ["Fantasía", "RPG"], featured: false },
+    { id: 8, title: "Autorretrato", category: "retrato", price: 0, image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&h=750&fit=crop", tags: ["Retrato", "Personal"], featured: false },
+];
+
+const blogPosts = [
+    {
+        id: "mi-proceso-creativo",
+        title: "Mi Proceso Creativo: Del Boceto al Color",
+        date: "2026-07-15",
+        excerpt: "Cómo paso de una idea vaga a una ilustración terminada. Mi workflow paso a paso.",
+        content: `
+# Mi Proceso Creativo: Del Boceto al Color
+
+Todo dibujo empieza con una chispa. A veces es una canción, otras una frase que leí, y muchas veces simplemente el aburrimiento.
+
+## 1. La Idea
+
+Lo primero es siempre un *thumbnail* rápido. No pienso en detalles, solo en composición y siluetas. Uso un pincel grueso y dejo que la mano fluya.
+
+## 2. Boceto Limpio
+
+Una vez que el thumbnail me convence, paso a definir líneas. Trabajo en capas separadas para no perder la energía del boceto inicial.
+
+## 3. Color Base
+
+Elijo una paleta antes de empezar. Uso *color.adobe.com* o extraigo colores de fotos de La Habana vieja.
+
+## 4. Render
+
+Aquí es donde más tiempo invierto. Luz, sombra, reflexiones... Cada textura cuenta una historia.
+
+> "El arte no tiene que ser perfecto, solo tiene que ser honesto."
+
+¡Gracias por leer! 💕
+        `
+    },
+    {
+        id: "herramientas-2026",
+        title: "Mis Herramientas en 2026",
+        date: "2026-06-28",
+        excerpt: "Hardware y software que uso diariamente para crear mis ilustraciones.",
+        content: `
+# Mis Herramientas en 2026
+
+Muchos me preguntan con qué dibujo. La verdad es que no hace falta mucho, solo constancia.
+
+## Hardware
+- **Tableta:** XP-Pen Artist 15.6 Pro
+- **PC:** Un setup modesto con Linux Mint
+- **Papel:** Cuando dibujo tradicional, uso Canson
+
+## Software
+- **Krita:** Mi principal herramienta digital. Libre, potente y hermoso.
+- **Inkscape:** Para vectores y logos.
+- **GIMP:** Retoques rápidos.
+
+## Por qué software libre
+
+Viviendo en Cuba, acceder a software de pago es complicado. Pero más allá de eso, creo en la filosofía del código abierto. El arte debe ser accesible.
+
+*¿Tú qué usas para dibujar?*
+        `
+    },
+    {
+        id: "inspiracion-cubana",
+        title: "Inspiración Cubana en mi Arte",
+        date: "2026-05-10",
+        excerpt: "Cómo los colores, la gente y la música de mi isla se filtran en cada trazo.",
+        content: `
+# Inspiración Cubana en mi Arte
+
+Nací en Santiago de Cuba, y esa tierra caliente marca cada color que elijo.
+
+## Los colores de mi gente
+
+El amarillo de los taxis almendrones, el azul del mar Caribe, el rojo intenso de las flamboyanes... Todo eso vive en mi paleta.
+
+## La música
+
+Dibujo escuchando *Buena Vista Social Club*, *Silvio Rodríguez* o reggaetón viejo. El ritmo marca la energía del trazo.
+
+## Personajes caribeños
+
+Me encanta darle a mis personajes rasgos afrocubanos. Representar mi gente en mundos de fantasía es un acto de amor.
+
+**Cuba es mi musa.**
+        `
+    }
+];
+
+let cart = [];
+let currentFilter = 'all';
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderFeatured();
+    renderGallery();
+    renderShop();
+    renderBlog();
+    loadTheme();
+});
+
+function showSection(sectionId) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    
+    document.querySelectorAll('.nav-link, .mobile-nav a').forEach(link => {
+        link.classList.toggle('active', link.dataset.section === sectionId);
+    });
+    
+    window.scrollTo(0, 0);
+}
+
+function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    document.getElementById('theme-icon').textContent = next === 'dark' ? '☀️' : '🌙';
+}
+
+function loadTheme() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    document.getElementById('theme-icon').textContent = saved === 'dark' ? '☀️' : '🌙';
+}
+
+function renderFeatured() {
+    const featured = artworks.filter(a => a.featured);
+    const grid = document.getElementById('featured-grid');
+    grid.innerHTML = featured.map(art => createArtCard(art)).join('');
+}
+
+function renderGallery() {
+    const filtered = currentFilter === 'all' ? artworks : artworks.filter(a => a.category === currentFilter);
+    const grid = document.getElementById('gallery-grid');
+    grid.innerHTML = filtered.map(art => createArtCard(art)).join('');
+}
+
+function createArtCard(art) {
+    return `
+        <div class="art-card" onclick="openLightbox(${art.id})">
+            <img src="${art.image}" alt="${art.title}" loading="lazy">
+            ${art.price > 0 ? `<span class="art-price">$${art.price}</span>` : ''}
+            <div class="art-overlay">
+                <div class="art-title">${art.title}</div>
+                <div class="art-tags">${art.tags.map(t => `<span class="art-tag">${t}</span>`).join('')}</div>
+            </div>
+        </div>
+    `;
+}
+
+function filterGallery(category) {
+    currentFilter = category;
+    document.querySelectorAll('#gallery-filters .filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(category === 'all' ? 'todo' : category));
+    });
+    renderGallery();
+}
+
+function openLightbox(id) {
+    const art = artworks.find(a => a.id === id);
+    if (!art) return;
+    
+    document.getElementById('lightbox-img').src = art.image;
+    document.getElementById('lightbox-title').textContent = art.title;
+    document.getElementById('lightbox-desc').innerHTML = art.tags.map(t => `<span class="art-tag">${t}</span>`).join(' ') + 
+        (art.price > 0 ? `<br><br><strong style="font-size:1.5rem;">$${art.price}</strong>` : '<br><br><em>No disponible para venta</em>');
+    
+    const buyBtn = document.getElementById('lightbox-buy');
+    if (art.price > 0) {
+        buyBtn.style.display = 'inline-flex';
+        buyBtn.onclick = () => { addToCart(art); closeLightbox(); };
+    } else {
+        buyBtn.style.display = 'none';
+    }
+    
+    document.getElementById('lightbox-wa').href = `https://wa.me/5356870519?text=Hola KiraLizt! Me interesa la obra "${art.title}"`;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function renderShop() {
+    const list = document.getElementById('shop-list');
+    const forSale = artworks.filter(a => a.price > 0);
+    
+    list.innerHTML = forSale.map(art => `
+        <div class="shop-item">
+            <img src="${art.image}" alt="${art.title}">
+            <div class="shop-info">
+                <h3>${art.title}</h3>
+                <div class="shop-meta">${art.tags.join(' · ')}</div>
+                <div class="shop-price">$${art.price}.00 USD</div>
+            </div>
+            <button class="btn btn-primary" onclick='addToCart(${JSON.stringify(art).replace(/'/g, "&apos;")})'>
+                Añadir al carrito
+            </button>
+        </div>
+    `).join('');
+}
+
+function addToCart(art) {
+    const existing = cart.find(item => item.id === art.id);
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ ...art, qty: 1 });
+    }
+    updateCart();
+    showToast(`"${art.title}" añadido al carrito`);
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    updateCart();
+}
+
+function updateCart() {
+    const count = cart.reduce((sum, item) => sum + item.qty, 0);
+    const badge = document.getElementById('cart-count');
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+    
+    const itemsContainer = document.getElementById('cart-items');
+    if (cart.length === 0) {
+        itemsContainer.innerHTML = '<div class="cart-empty">El carrito está vacío</div>';
+    } else {
+        itemsContainer.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <img src="${item.image}" alt="${item.title}">
+                <div class="cart-item-info">
+                    <div class="cart-item-title">${item.title}</div>
+                    <div style="color: var(--text-2); font-size: 0.85rem;">Cantidad: ${item.qty}</div>
+                    <div class="cart-item-price">$${item.price * item.qty}</div>
+                </div>
+                <button class="icon-btn" onclick="removeFromCart(${item.id})" style="width:32px;height:32px;">🗑️</button>
+            </div>
+        `).join('');
+    }
+    
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
+}
+
+function toggleCart() {
+    document.getElementById('cart-sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('active');
+}
+
+function closeCart() {
+    document.getElementById('cart-sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        showToast('El carrito está vacío');
+        return;
+    }
+    
+    const items = cart.map(i => `• ${i.title} (x${i.qty}) - $${i.price * i.qty}`).join('%0A');
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const msg = `¡Hola KiraLizt! 👋%0A%0AQuiero hacer un pedido:%0A%0A${items}%0A%0ATotal: $${total.toFixed(2)}%0A%0AMis datos:%0A[Nombre completo]%0A[Dirección de entrega]%0A[Método de pago preferido]`;
+    
+    window.open(`https://wa.me/5356870519?text=${msg}`, '_blank');
+}
+
+function submitCommission(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const entries = Object.fromEntries(data.entries());
+    
+    const msg = `¡Hola KiraLizt! 👋%0A%0AQuiero solicitar una comisión.%0A%0A*Nombre:* ${entries[0]}%0A*Email:* ${entries[1]}%0A*Tipo:* ${entries[2]}%0A*Uso:* ${entries[3]}%0A*Referencia:* ${entries[4] || 'Ninguna'}%0A%0A*Descripción:*%0A${entries[5]}`;
+    
+    window.open(`https://wa.me/5356870519?text=${msg}`, '_blank');
+    showToast('Redirigiendo a WhatsApp...');
+    form.reset();
+}
+
+function renderBlog() {
+    const grid = document.getElementById('blog-grid');
+    grid.innerHTML = blogPosts.map(post => `
+        <div class="blog-card" onclick="openBlogPost('${post.id}')">
+            <div class="blog-card-header">
+                <div class="blog-card-date">${formatDate(post.date)}</div>
+                <h3>${post.title}</h3>
+            </div>
+            <p>${post.excerpt}</p>
+        </div>
+    `).join('');
+}
+
+function openBlogPost(id) {
+    const post = blogPosts.find(p => p.id === id);
+    if (!post) {
+        showToast('Post no encontrado');
+        return;
+    }
+    
+    document.getElementById('blog-list-view').style.display = 'none';
+    document.getElementById('blog-post-view').style.display = 'block';
+    
+    const content = document.getElementById('blog-post-content');
+    content.innerHTML = `
+        <h1>${post.title}</h1>
+        <div class="blog-post-meta">${formatDate(post.date)} · KiraLizt</div>
+        <div class="blog-post-content">${marked.parse(post.content)}</div>
+    `;
+    window.scrollTo(0, 0);
+}
+
+function showBlogList() {
+    document.getElementById('blog-list-view').style.display = 'block';
+    document.getElementById('blog-post-view').style.display = 'none';
+    window.scrollTo(0, 0);
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function toggleMobileMenu() {
+    document.querySelector('.nav-links').style.display = 
+        document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
+}
+</script>
+
+</body>
+</html>
