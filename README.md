@@ -1,8 +1,6 @@
-# 🎨 Kirart — Ilustración & Comisiones
+# 🎨 Kirart Web
 
-Portfolio web modular para KiraLizt, ilustradora cubana. Galería interactiva, tienda con carrito, sistema de comisiones vía WhatsApp, blog con Markdown y diseño responsive con tema oscuro/claro.
-
-**URL de producción:** [https://kirart.pages.dev](https://kirart.pages.dev) *(próximamente)*
+Portafolio web modular para **KiraLizt** — ilustradora cubana. Galería, tienda, comisiones, blog y contacto en una SPA moderna, rápida y desplegable en Cloudflare Pages.
 
 ---
 
@@ -10,14 +8,17 @@ Portfolio web modular para KiraLizt, ilustradora cubana. Galería interactiva, t
 
 | Capa | Tecnología |
 |------|-----------|
-| **Framework** | React 19 + TypeScript |
-| **Bundler** | Vite 6 |
-| **Routing** | React Router DOM v7 (SPA) |
-| **Estilos** | Tailwind CSS 3.4 + shadcn/ui |
-| **Animaciones** | GSAP + ScrollTrigger |
-| **Blog** | react-markdown + remark-gfm + gray-matter |
-| **Iconos** | Lucide React |
-| **Deploy** | Cloudflare Pages |
+| Framework | [React 19](https://react.dev/) |
+| Bundler | [Vite 6](https://vitejs.dev/) |
+| Lenguaje | [TypeScript 5.6](https://www.typescriptlang.org/) |
+| Estilos | [Tailwind CSS 3.4](https://tailwindcss.com/) |
+| Componentes UI | [shadcn/ui](https://ui.shadcn.com/) (40 componentes Radix) |
+| Routing | [React Router 7](https://reactrouter.com/) |
+| Animaciones | [GSAP 3.12](https://gsap.com/) + ScrollTrigger |
+| Markdown | [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm) |
+| Frontmatter | [gray-matter](https://github.com/jonschlinkert/gray-matter) |
+| Íconos | [Lucide React](https://lucide.dev/) |
+| Formularios | [react-hook-form](https://react-hook-form.com/) (preparado) |
 
 ---
 
@@ -25,50 +26,43 @@ Portfolio web modular para KiraLizt, ilustradora cubana. Galería interactiva, t
 
 ```
 kirart-web/
-├── public/                  # Assets estáticos + imágenes de obras
-│   ├── images/              # /images/art-{1..8}.jpg
-│   └── _redirects           # SPA fallback para Cloudflare
+├── public/                    # Assets estáticos + _redirects
+│   ├── images/               # Obras de arte (reemplazar placeholders)
+│   └── _redirects            # SPA fallback para Cloudflare Pages
 ├── src/
-│   ├── App.tsx              # Router principal (9 rutas)
-│   ├── main.tsx             # Entry point
-│   ├── index.css            # Variables CSS + Tailwind directives
+│   ├── main.tsx              # Punto de entrada
+│   ├── App.tsx               # Router principal
+│   ├── index.css             # Tailwind + variables CSS dark/light
 │   ├── lib/
-│   │   └── utils.ts         # cn() helper (clsx + tailwind-merge)
+│   │   └── utils.ts          # cn() — utilidad de clases
 │   ├── types/
-│   │   └── index.ts         # Interfaces: Artwork, CartItem, Tool, BlogPost
+│   │   └── index.ts          # Tipos globales (Artwork, CartItem, etc.)
 │   ├── data/
-│   │   ├── artworks.ts      # Catálogo de obras
-│   │   └── tools.ts         # Stack de herramientas (estilo BitCriollo)
+│   │   ├── artworks.ts       # Catálogo de obras
+│   │   └── tools.ts          # Herramientas del estudio
 │   ├── context/
-│   │   └── CartContext.tsx  # Estado global del carrito (React Context)
+│   │   └── CartContext.tsx   # Estado global del carrito
 │   ├── hooks/
-│   │   ├── useTheme.ts      # Persistencia tema dark/light
+│   │   ├── useTheme.ts       # Tema oscuro/claro con localStorage
 │   │   └── useScrollReveal.ts # Wrapper GSAP ScrollTrigger
 │   ├── components/
-│   │   ├── ui/              # 40 componentes shadcn/ui (Radix-based)
-│   │   ├── layout/
-│   │   │   ├── Header.tsx   # Navegación desktop/mobile + tema + carrito
-│   │   │   ├── CartSidebar.tsx # Sheet lateral con checkout WhatsApp
-│   │   │   └── WhatsAppFloat.tsx
-│   │   ├── home/
-│   │   │   ├── Hero.tsx     # Animación GSAP de entrada
-│   │   │   └── FeaturedGrid.tsx
-│   │   ├── gallery/
-│   │   │   ├── ArtCard.tsx  # Tarjeta con hover overlay
-│   │   │   └── Lightbox.tsx # Modal ampliado con acciones
-│   │   └── shared/
-│   │       └── Toast.tsx    # Notificaciones globales
+│   │   ├── ui/               # 40 componentes shadcn/ui
+│   │   ├── layout/           # Header, CartSidebar, WhatsAppFloat
+│   │   ├── home/             # Hero, FeaturedGrid
+│   │   ├── gallery/          # ArtCard, Lightbox
+│   │   ├── shared/           # Toast
+│   │   └── ... (páginas)
 │   ├── pages/
 │   │   ├── HomePage.tsx
-│   │   ├── GalleryPage.tsx      # Filtros por categoría
-│   │   ├── ShopPage.tsx         # Listado + add-to-cart
-│   │   ├── CommissionsPage.tsx  # Precios + formulario → WhatsApp
-│   │   ├── ToolsPage.tsx        # Grid estilo terminal
-│   │   ├── TipsPage.tsx         # Grid 2x2 para clientes
+│   │   ├── GalleryPage.tsx
+│   │   ├── ShopPage.tsx
+│   │   ├── CommissionsPage.tsx
+│   │   ├── ToolsPage.tsx
+│   │   ├── TipsPage.tsx
 │   │   ├── BlogListPage.tsx
-│   │   ├── BlogPostPage.tsx     # gray-matter + react-markdown
+│   │   ├── BlogPostPage.tsx
 │   │   └── ContactPage.tsx
-│   └── content/blog/        # Posts en Markdown con frontmatter
+│   └── content/blog/         # Posts en Markdown con frontmatter
 │       ├── mi-proceso-creativo.md
 │       ├── herramientas-2026.md
 │       └── inspiracion-cubana.md
@@ -84,153 +78,110 @@ kirart-web/
 ## ⚡ Instalación Rápida
 
 ```bash
-# 1. Clonar
-git clone https://github.com/tu-usuario/kirart-web.git
+# 1. Clonar o descomprimir el proyecto
 cd kirart-web
 
 # 2. Instalar dependencias
 npm install
 
-# 3. Modo desarrollo
+# 3. Iniciar servidor de desarrollo
 npm run dev
-
-# 4. Build de producción
-npm run build
 ```
 
-> **Nota:** El proyecto usa `import.meta.glob` de Vite para cargar archivos `.md` del blog. Asegúrate de que los posts estén en `src/content/blog/`.
+La app estará disponible en `http://localhost:5173`
 
 ---
 
-## 🔧 Configuración antes del deploy
+## 🛠️ Scripts Disponibles
 
-### 1. Reemplazar imágenes placeholder
-Las obras usan rutas en `/public/images/art-{id}.jpg`. Sustitúyelas por las ilustraciones reales de KiraLizt.
-
-### 2. Ajustar datos de contacto
-Edita estos archivos con la información real:
-
-- `src/data/artworks.ts` — precios, títulos, tags
-- `src/pages/ContactPage.tsx` — email, redes sociales, teléfono
-- `src/context/CartContext.tsx` y páginas con checkout — número de WhatsApp (`5356870519`)
-
-### 3. Variables de tema
-El tema se alterna entre `dark` y `light` vía clase en `<html>`. Las variables CSS están definidas en `src/index.css`. La paleta principal usa:
-- **Primary:** `#e63946` (rojo coral)
-- **Accent:** `#3b82f6` (azul)
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Servidor de desarrollo con HMR |
+| `npm run build` | Build de producción (`dist/`) |
+| `npm run preview` | Previsualizar build localmente |
 
 ---
 
-## 🌐 Deploy en Cloudflare Pages
+## 🎨 Personalización
 
-### Opción A: Git integration (recomendado)
-1. Sube el repo a GitHub/GitLab.
-2. En Cloudflare Dashboard → **Pages** → **Create a project**.
-3. Conecta tu repo.
-4. Build settings:
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-5. El archivo `public/_redirects` ya está configurado para SPA routing:
-   ```
-   /*    /index.html   200
-   ```
+### Paleta de colores
+Edita las variables CSS en `src/index.css`:
 
-### Opción B: Wrangler CLI
-```bash
-npm install -g wrangler
-wrangler pages deploy dist --project-name=kirart
+```css
+:root {
+  --primary: 355 70% 55%;      /* Rojo Kirart */
+  --accent: 217 91% 60%;       /* Azul complementario */
+  /* ... */
+}
 ```
 
----
+### Obras de arte
+Reemplaza las imágenes en `public/images/` y actualiza `src/data/artworks.ts`.
 
-## 🧩 Arquitectura y Convenciones
-
-### Estado global
-- **Carrito:** React Context (`CartContext`) con `useState` + `useCallback`. Persistencia no es necesaria (checkout va directo a WhatsApp).
-
-### Routing
-- React Router v7 con `BrowserRouter`.
-- Rutas dinámicas para blog: `/blog/:slug`.
-- `ScrollToTop` implícito en cada cambio de página vía `window.scrollTo(0, 0)` en los layouts.
-
-### shadcn/ui
-Los 40 componentes en `src/components/ui/` usan la convención `data-slot` y dependen de:
-- Radix UI primitives
-- `cn()` para merging de clases
-- Tokens de Tailwind (`bg-card`, `text-primary`, etc.)
-
-### Blog (Markdown)
-Los posts usan **frontmatter** procesado con `gray-matter`:
+### Posts del blog
+Añade archivos `.md` en `src/content/blog/` con frontmatter:
 
 ```markdown
 ---
 title: "Título del post"
 date: "2026-07-28"
-excerpt: "Descripción corta"
+excerpt: "Breve descripción"
 ---
 
-Contenido en Markdown...
+Contenido en **Markdown**...
 ```
 
-Se cargan en build-time con `import.meta.glob`, por lo que no requieren backend.
-
-### WhatsApp Integration
-Todas las acciones de compra/comisión generan un mensaje pre-formateado que se abre en WhatsApp Web/App:
-
-```
-https://wa.me/5356870519?text=...
-```
+### Datos de contacto
+Actualiza el número de WhatsApp y email en:
+- `src/components/layout/WhatsAppFloat.tsx`
+- `src/pages/ContactPage.tsx`
+- `src/components/layout/CartSidebar.tsx`
 
 ---
 
-## 📜 Scripts disponibles
+## 📦 Despliegue en Cloudflare Pages
 
-| Comando | Descripción |
-|---------|-------------|
-| `npm run dev` | Servidor de desarrollo (Vite) |
-| `npm run build` | Build de producción (TypeScript + Vite) |
-| `npm run preview` | Previsualizar build local |
+### Opción A: Git Integration (recomendado)
 
----
+1. Sube el repo a **GitHub**
+2. Ve a [Cloudflare Pages Dashboard](https://dash.cloudflare.com/)
+3. Crea un nuevo proyecto → **Connect to Git**
+4. Selecciona tu repo
+5. Configura el build:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+6. Guarda y despliega 🚀
 
-## 🎨 Personalización visual
+### Opción B: Upload Manual
 
-### Fuentes
-Google Fonts se cargan en `index.html`:
-- **Space Grotesk** — títulos y display
-- **Inter** — cuerpo de texto
-- **JetBrains Mono** — terminal/tools
-
-### Gradientes principales
-```css
-bg-gradient-to-r from-primary to-accent   /* Rojo → Azul */
-bg-gradient-to-br from-primary to-accent  /* Variante hero */
+```bash
+npm run build
+# Sube la carpeta dist/ manualmente desde el dashboard
 ```
 
-### Breakpoints responsive
-- Mobile: `< 768px` (menú hamburguesa, grids 1 columna)
-- Desktop: `≥ 768px` (navegación horizontal, grids multi-columna)
+### ⚠️ SPA Routing
+El archivo `public/_redirects` ya incluye:
+
+```
+/*    /index.html   200
+```
+
+Esto asegura que rutas como `/blog/mi-post` funcionen correctamente.
 
 ---
 
-## 📝 To-Do / Próximos pasos
+## 🧩 Componentes shadcn/ui Incluidos
 
-- [ ] Reemplazar imágenes placeholder por obras reales
-- [ ] Conectar dominio personalizado en Cloudflare
-- [ ] Añadir metatags OG/Twitter para SEO
-- [ ] Implementar sitemap.xml
-- [ ] Lazy loading de imágenes con blur placeholder
-- [ ] Añadir más posts al blog
-
----
-
-## 👤 Autor
-
-**KiraLizt** — Ilustradora cubana  
-📱 [WhatsApp](https://wa.me/5356870519) · 🎨 [Portfolio](https://kirart.pages.dev)
+Accordion, Alert, AlertDialog, AspectRatio, Avatar, Badge, Breadcrumb, Button, ButtonGroup, Calendar, Card, Carousel, Chart, Checkbox, Collapsible, Command, ContextMenu, Dialog, Drawer, DropdownMenu, Empty, Field, Form, HoverCard, Input, InputGroup, InputOTP, Item, Kbd, Label, Menubar, NavigationMenu, Pagination, Popover, Progress, RadioGroup, Resizable, ScrollArea, Select, Separator, Textarea.
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto es privado. El código fuente y las ilustraciones son propiedad de KiraLizt.
+Proyecto privado — KiraLizt © 2026
+
+---
+
+<p align="center">
+  Hecho con ❤️ en Cuba · Desplegado en Cloudflare Pages
+</p>
