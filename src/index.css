@@ -6,7 +6,6 @@
 
 @layer base {
   :root {
-    /* === PALETA VIBRANTE KIRART === */
     --primary: 340 90% 60%;
     --primary-foreground: 0 0% 100%;
     --accent: 280 100% 65%;
@@ -31,7 +30,6 @@
     --destructive-foreground: 0 0% 98%;
     --radius: 1rem;
 
-    /* Glows */
     --glow-primary: hsl(340 90% 60% / 0.35);
     --glow-accent: hsl(280 100% 65% / 0.35);
     --glow-warm: hsl(35 100% 60% / 0.25);
@@ -78,7 +76,6 @@
   }
 }
 
-/* === ANIMACIONES === */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-12px); }
@@ -127,7 +124,6 @@
   animation: border-glow 3s ease-in-out infinite;
 }
 
-/* === UTILIDADES ARTÍSTICAS === */
 .text-gradient {
   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--accent-warm)));
   -webkit-background-clip: text;
@@ -163,7 +159,6 @@
   -webkit-backdrop-filter: blur(24px);
 }
 
-/* === PROSE (Blog) === */
 .prose h1, .prose h2, .prose h3, .prose h4 {
   @apply font-display text-foreground;
 }
