@@ -18,6 +18,7 @@ export default function App() {
   return (
     <CartProvider>
       <BrowserRouter>
+        <AnimatedBackground />
         <Header />
         <CartSidebar />
         <Toast />
