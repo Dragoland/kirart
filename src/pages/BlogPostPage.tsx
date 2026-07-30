@@ -6,31 +6,131 @@ import matter from 'gray-matter';
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
-const modules = import.meta.glob('../../content/blog/*.md', { eager: true, query: '?raw', import: 'default' });
+// Ruta absoluta para Vite
+const modules = import.meta.glob('/src/content/blog/*.md', { eager: true, query: '?raw', import: 'default' });
+
+// Fallback de contenido por si el glob falla
+const fallbackContent: Record<string, { title: string; date: string; excerpt: string; content: string; tags: string[] }> = {
+  'mi-proceso-creativo': {
+    title: 'Mi Proceso Creativo: Del Boceto al Color',
+    date: '2026-07-15',
+    excerpt: 'Cómo paso de una idea vaga a una ilustración terminada.',
+    tags: ['proceso', 'tutorial'],
+    content: `## La chispa inicial
+
+Todo empieza con una idea. Puede ser una frase que escuché, una canción, o simplemente un color que me gustó ese día. Lo anoto en mi cuaderno de bocetos o en una nota rápida en el celular.
+
+## El boceto
+
+Uso papel Canson y lápices Prismacolor para los bocetos iniciales. No me preocupo por la perfección, solo busco capturar la **esencia** de la idea. La pose, la expresión, la composición general.
+
+## Digitalización
+
+Paso el boceto a Krita usando mi tableta XP-Pen. Aquí empiezo a definir líneas limpias y a pensar en la paleta de colores. Me gusta experimentar con combinaciones inesperadas.
+
+## Color y luz
+
+Este es mi paso favorito. Juego con capas de multiply, overlay y add para crear profundidad. La luz define el ambiente de la pieza.
+
+## Detalles finales
+
+El último 10% del trabajo que toma el 90% del tiempo. Texturas, ajustes de color, pequeños detalles que hacen que la ilustración cobre vida.
+
+---
+
+*¿Te gustaría ver un timelapse de este proceso? Avísame por WhatsApp.*`,
+  },
+  'herramientas-2026': {
+    title: 'Mis Herramientas en 2026',
+    date: '2026-06-28',
+    excerpt: 'Hardware y software que uso diariamente.',
+    tags: ['herramientas', 'setup'],
+    content: `## Software
+
+- **Krita**: Mi principal herramienta de pintura digital. Libre, potente y con una comunidad increíble.
+- **GIMP**: Para retoques y manipulación de imágenes.
+- **Inkscape**: Cuando necesito vectores limpios.
+- **Blender**: Para crear referencias 3D de poses complejas.
+
+## Hardware
+
+- **XP-Pen Artist 15.6 Pro**: Mi tableta gráfica con pantalla.
+- **PC con Linux Mint**: Rápido, estable y sin distracciones.
+
+## Tradicionales
+
+- **Papel Canson**: Para bocetos y estudios.
+- **Prismacolor**: Los mejores lápices de colores que he probado.
+
+---
+
+*Todo el software que uso es libre o de código abierto. ¡El arte no necesita licencias caras!*`,
+  },
+  'inspiracion-cubana': {
+    title: 'Inspiración Cubana en mi Arte',
+    date: '2026-05-10',
+    excerpt: 'Cómo mi isla se filtra en cada trazo.',
+    tags: ['cuba', 'inspiración'],
+    content: `## Los colores de Cuba
+
+El amarillo de los taxis almendrones, el azul del mar del Este, el verde intenso de la caña... Mi paleta siempre tiene un poco de Cuba.
+
+## La gente
+
+Los rostros de mi familia, los vecinos, la gente en la calle. Cada rostro cuenta una historia que quiero capturar.
+
+## La música
+
+El son, el reguetón, la trova... Dibujo escuchando música. Cada pieza tiene su soundtrack.
+
+---
+
+*Cuba es mi musa eterna.*`,
+  },
+};
 
 export function BlogPostPage() {
   const { slug } = useParams();
-  const [post, setPost] = useState<{ title: string; date: string; excerpt: string; content: string; tags?: string[] } | null>(null);
+  const [post, setPost] = useState<{ title: string; date: string; excerpt: string; content: string; tags: string[] } | null>(null);
   const [notFound, setNotFound] = useState(false);
   const ref = useScrollReveal<HTMLDivElement>();
 
   useEffect(() => {
+    if (!slug) {
+      setNotFound(true);
+      return;
+    }
+
+    // Buscar en los módulos cargados por Vite
     const matchingKey = Object.keys(modules).find(key => key.includes(`/${slug}.md`));
     const raw = matchingKey ? (modules[matchingKey] as string) : undefined;
-    
+
     if (raw) {
-      const parsed = matter(raw);
-      setPost({
-        title: parsed.data.title,
-        date: parsed.data.date,
-        excerpt: parsed.data.excerpt || '',
-        content: parsed.content,
-        tags: parsed.data.tags || [],
-      });
-      setNotFound(false);
-    } else {
-      setNotFound(true);
+      try {
+        const parsed = matter(raw);
+        setPost({
+          title: parsed.data.title || 'Sin título',
+          date: parsed.data.date || new Date().toISOString(),
+          excerpt: parsed.data.excerpt || '',
+          content: parsed.content || '',
+          tags: parsed.data.tags || [],
+        });
+        setNotFound(false);
+        return;
+      } catch (err) {
+        console.warn('Error parseando MD:', err);
+      }
     }
+
+    // Fallback: buscar en contenido hardcodeado
+    const fallback = fallbackContent[slug];
+    if (fallback) {
+      setPost(fallback);
+      setNotFound(false);
+      return;
+    }
+
+    setNotFound(true);
   }, [slug]);
 
   if (notFound) {
@@ -72,7 +172,7 @@ export function BlogPostPage() {
             </div>
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <Clock size={16} className="text-primary" />
-              {Math.ceil(post.content.split(' ').length / 200)} min de lectura
+              {Math.max(1, Math.ceil(post.content.split(' ').length / 200))} min de lectura
             </div>
           </div>
 
@@ -84,7 +184,7 @@ export function BlogPostPage() {
             </p>
           )}
 
-          {post.tags && post.tags.length > 0 && (
+          {post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
               {post.tags.map(tag => (
                 <span key={tag} className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium border border-primary/20">
