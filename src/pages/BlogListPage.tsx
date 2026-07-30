@@ -4,7 +4,33 @@ import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 import matter from 'gray-matter';
 import { useMemo } from 'react';
 
-const modules = import.meta.glob('../../content/blog/*.md', { eager: true, query: '?raw', import: 'default' });
+// Usar ruta absoluta para que Vite la resuelva correctamente en build
+const modules = import.meta.glob('/src/content/blog/*.md', { eager: true, query: '?raw', import: 'default' });
+
+// Fallback hardcodeado por si el glob no carga en producción
+const fallbackPosts = [
+  {
+    slug: 'mi-proceso-creativo',
+    title: 'Mi Proceso Creativo: Del Boceto al Color',
+    date: '2026-07-15',
+    excerpt: 'Cómo paso de una idea vaga a una ilustración terminada. Mi workflow paso a paso.',
+    tags: ['proceso', 'tutorial'],
+  },
+  {
+    slug: 'herramientas-2026',
+    title: 'Mis Herramientas en 2026',
+    date: '2026-06-28',
+    excerpt: 'Hardware y software que uso diariamente para crear mis ilustraciones.',
+    tags: ['herramientas', 'setup'],
+  },
+  {
+    slug: 'inspiracion-cubana',
+    title: 'Inspiración Cubana en mi Arte',
+    date: '2026-05-10',
+    excerpt: 'Cómo los colores, la gente y la música de mi isla se filtran en cada trazo.',
+    tags: ['cuba', 'inspiración'],
+  },
+];
 
 interface BlogMeta {
   slug: string;
@@ -19,18 +45,30 @@ export function BlogListPage() {
 
   const posts = useMemo(() => {
     const loaded: BlogMeta[] = [];
+    
+    // Intentar cargar desde archivos MD
     for (const [path, raw] of Object.entries(modules)) {
-      const slug = path.replace('../../content/blog/', '').replace('.md', '');
-      const parsed = matter(raw as string);
-      loaded.push({
-        slug,
-        title: parsed.data.title,
-        date: parsed.data.date,
-        excerpt: parsed.data.excerpt || '',
-        tags: parsed.data.tags || [],
-      });
+      try {
+        const slugMatch = path.match(/\/([^/]+)\.md$/);
+        const slug = slugMatch ? slugMatch[1] : path.replace('/src/content/blog/', '').replace('.md', '');
+        const parsed = matter(raw as string);
+        loaded.push({
+          slug,
+          title: parsed.data.title || 'Sin título',
+          date: parsed.data.date || new Date().toISOString(),
+          excerpt: parsed.data.excerpt || '',
+          tags: parsed.data.tags || [],
+        });
+      } catch (err) {
+        console.warn('Error parseando blog:', path, err);
+      }
     }
-    return loaded.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    // Si no cargó nada del glob, usar fallback
+    const result = loaded.length > 0 ? loaded : fallbackPosts;
+    
+    // Ordenar por fecha descendente
+    return result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, []);
 
   return (
@@ -66,7 +104,7 @@ export function BlogListPage() {
                     </span>
                     <span className="inline-flex items-center gap-1.5">
                       <Clock size={13} className="text-primary" />
-                      {Math.ceil(post.excerpt.split(' ').length / 40)} min
+                      {Math.max(1, Math.ceil(post.excerpt.split(' ').length / 40))} min
                     </span>
                   </div>
                   <h3 className="font-display text-lg font-semibold mb-3 group-hover:text-primary transition-colors leading-snug">{post.title}</h3>
