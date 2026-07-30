@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { CartSidebar } from '@/components/layout/CartSidebar';
 import { WhatsAppFloat } from '@/components/layout/WhatsAppFloat';
 import { Toast } from '@/components/shared/Toast';
+import { AnimatedBackground } from '@/components/shared/AnimatedBackground';
 import { HomePage } from '@/pages/HomePage';
 import { GalleryPage } from '@/pages/GalleryPage';
 import { ShopPage } from '@/pages/ShopPage';
