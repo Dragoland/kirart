@@ -6,7 +6,6 @@ import matter from 'gray-matter';
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
-// FIX: Usar ruta relativa para que Vite resuelva correctamente los MD
 const modules = import.meta.glob('../../content/blog/*.md', { eager: true, query: '?raw', import: 'default' });
 
 export function BlogPostPage() {
@@ -16,10 +15,9 @@ export function BlogPostPage() {
   const ref = useScrollReveal<HTMLDivElement>();
 
   useEffect(() => {
-    // Buscar el archivo que coincida con el slug
     const matchingKey = Object.keys(modules).find(key => key.includes(`/${slug}.md`));
     const raw = matchingKey ? (modules[matchingKey] as string) : undefined;
-
+    
     if (raw) {
       const parsed = matter(raw);
       setPost({
@@ -79,7 +77,7 @@ export function BlogPostPage() {
           </div>
 
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-6 leading-tight">{post.title}</h1>
-
+          
           {post.excerpt && (
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed border-l-4 border-primary/30 pl-4 italic">
               {post.excerpt}
