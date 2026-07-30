@@ -4,7 +4,6 @@ import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 import matter from 'gray-matter';
 import { useMemo } from 'react';
 
-// FIX: Cargar posts dinámicamente desde archivos MD
 const modules = import.meta.glob('../../content/blog/*.md', { eager: true, query: '?raw', import: 'default' });
 
 interface BlogMeta {
@@ -31,7 +30,6 @@ export function BlogListPage() {
         tags: parsed.data.tags || [],
       });
     }
-    // Ordenar por fecha descendente
     return loaded.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, []);
 
@@ -73,7 +71,7 @@ export function BlogListPage() {
                   </div>
                   <h3 className="font-display text-lg font-semibold mb-3 group-hover:text-primary transition-colors leading-snug">{post.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3">{post.excerpt}</p>
-
+                  
                   {post.tags && post.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {post.tags.slice(0, 3).map(tag => (
