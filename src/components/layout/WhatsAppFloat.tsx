@@ -1,15 +1,18 @@
 import { MessageCircle } from 'lucide-react';
+import { waLink } from '@/lib/site';
 
 export function WhatsAppFloat() {
   return (
     <a
-      href="https://wa.me/5356870519"
+      href={waLink()}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-gradient-to-br from-[#25d366] to-[#128C7E] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#25d366]/40 hover:scale-110 hover:shadow-[#25d366]/60 transition-all duration-300 animate-float"
+      className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-primary text-primary-foreground border border-cotton/30 rounded-full flex items-center justify-center shadow-2xl hover:bg-accent hover:scale-110 transition-all duration-300 animate-float"
+      style={{ boxShadow: '0 10px 40px -8px var(--glow)' }}
       title="Escríbeme por WhatsApp"
+      aria-label="Escríbeme por WhatsApp"
     >
-      <MessageCircle size={28} />
+      <MessageCircle size={26} />
     </a>
   );
 }

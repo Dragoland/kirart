@@ -1,23 +1,23 @@
-import { artworks } from '@/data/artworks';
-import { ArtCard } from '@/components/gallery/ArtCard';
 import { useState } from 'react';
+import { useData } from '@/context/DataContext';
+import { ArtCard } from '@/components/gallery/ArtCard';
 import { Lightbox } from '@/components/gallery/Lightbox';
 import { Artwork } from '@/types';
-import { Sparkles } from 'lucide-react';
 
 export function FeaturedGrid() {
-  const featured = artworks.filter(a => a.featured);
+  const { artworks, loading } = useData();
+  const featured = artworks.filter((a) => a.featured).slice(0, 8);
   const [selected, setSelected] = useState<Artwork | null>(null);
+
+  if (!loading && featured.length === 0) {
+    return <p className="text-center text-muted-foreground py-10">Pronto habrá obras destacadas aquí.</p>;
+  }
 
   return (
     <>
-      <div className="flex items-center justify-center gap-2 mb-10">
-        <Sparkles size={20} className="text-primary" />
-        <span className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Selección curada</span>
-      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {featured.map((art, i) => (
-          <div key={art.id} className="animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
+          <div key={art.id} className="animate-fade-in" style={{ animationDelay: `${i * 90}ms` }}>
             <ArtCard art={art} onOpen={setSelected} />
           </div>
         ))}

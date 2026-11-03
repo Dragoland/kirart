@@ -1,55 +1,44 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { ArrowRight, Pencil, Paintbrush } from 'lucide-react';
+import { ArrowRight, Pencil } from 'lucide-react';
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = gsap.context(() => {
-      gsap.from('.hero-title', { opacity: 0, y: 50, duration: 1.2, ease: 'power3.out' });
-      gsap.from('.hero-sub', { opacity: 0, y: 40, duration: 1, delay: 0.3, ease: 'power3.out' });
-      gsap.from('.hero-btns', { opacity: 0, y: 30, duration: 1, delay: 0.5, ease: 'power3.out' });
-      gsap.from('.hero-orb', { opacity: 0, scale: 0.8, duration: 2, delay: 0.2, ease: 'power2.out', stagger: 0.3 });
-    }, containerRef);
+      // Una sola secuencia de entrada: el arco se dibuja y el título emerge de la niebla
+      gsap.from('.hero-arch path', { strokeDashoffset: 1600, duration: 2.6, ease: 'power2.inOut', stagger: 0.25 });
+      gsap.from('.hero-title', { opacity: 0, y: 40, filter: 'blur(14px)', duration: 1.6, ease: 'power3.out', delay: 0.3 });
+      gsap.from('.hero-sub, .hero-btns', { opacity: 0, y: 24, duration: 1, ease: 'power3.out', delay: 0.9, stagger: 0.15 });
+    }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-[95vh] flex items-center justify-center overflow-hidden pt-16">
-      {/* Orbes decorativos animados */}
-      <div className="hero-orb absolute top-1/4 left-[10%] w-72 h-72 rounded-full opacity-20 animate-pulse-glow" 
-        style={{ background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      <div className="hero-orb absolute bottom-1/4 right-[10%] w-96 h-96 rounded-full opacity-15 animate-pulse-glow" 
-        style={{ background: 'radial-gradient(circle, hsl(var(--accent)) 0%, transparent 70%)', filter: 'blur(80px)', animationDelay: '2s' }} />
-      <div className="hero-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-10 animate-pulse-glow" 
-        style={{ background: 'radial-gradient(circle, hsl(var(--accent-warm)) 0%, transparent 70%)', filter: 'blur(100px)', animationDelay: '4s' }} />
+    <section ref={ref} className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-16 px-6">
+      {/* Arco gótico apuntado */}
+      <svg aria-hidden viewBox="0 0 400 600" preserveAspectRatio="xMidYMax meet"
+        className="hero-arch absolute inset-x-0 bottom-0 mx-auto h-[96%] w-auto text-blood opacity-40" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M20 600V250Q20 70 200 8Q380 70 380 250V600" strokeDasharray="1600" />
+        <path d="M44 600V255Q44 100 200 44Q356 100 356 255V600" strokeDasharray="1600" opacity=".6" />
+        <path d="M200 8V44" strokeDasharray="1600" opacity=".6" />
+      </svg>
 
-      <div className="relative z-10 text-center max-w-3xl px-6">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-8 animate-float">
-          <Paintbrush size={14} />
-          Ilustración cubana independiente
-        </div>
-
-        <h1 className="hero-title font-display text-6xl md:text-8xl font-bold leading-none tracking-tight">
-          <span className="text-gradient">Kirart</span>
+      <div className="relative z-10 text-center max-w-3xl">
+        <h1 className="hero-title font-gothic text-[6rem] sm:text-[9rem] md:text-[13rem] leading-[0.85] text-gradient"
+          style={{ filter: 'drop-shadow(0 0 40px var(--glow))' }}>
+          Kirart
         </h1>
-
-        <p className="hero-sub mt-8 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          Dando color a ideas, personajes y mundos que solo existen en la imaginación...{' '}
+        <p className="hero-sub mt-6 text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          Dando color a ideas, personajes y mundos que solo existen en la imaginación…{' '}
           <span className="text-foreground font-medium">hasta ahora.</span>
         </p>
-
         <div className="hero-btns mt-10 flex flex-wrap justify-center gap-4">
-          <Link to="/gallery" className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-all duration-300 shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:scale-105">
-            Ver Galería 
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link to="/commissions" className="group inline-flex items-center gap-2 px-8 py-4 rounded-full border border-border/60 bg-card/50 hover:bg-secondary/80 backdrop-blur-sm transition-all duration-300 hover:scale-105 font-semibold">
-            <Pencil size={18} className="text-primary" /> 
-            Encargar Dibujo
-          </Link>
+          <Link to="/gallery" className="btn-primary px-8 py-4">Ver galería <ArrowRight size={18} /></Link>
+          <Link to="/commissions" className="btn-ghost px-8 py-4"><Pencil size={18} className="text-blood" /> Encargar un dibujo</Link>
         </div>
       </div>
     </section>

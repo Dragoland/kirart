@@ -10,24 +10,23 @@ export function useScrollReveal<T extends HTMLElement>() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    gsap.fromTo(el, 
-      { opacity: 0, y: 30 },
-      { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.6, 
+    const tween = gsap.fromTo(
+      el,
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
         ease: 'power2.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        }
+        scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none none' },
       }
     );
 
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      tween.scrollTrigger?.kill();
+      tween.kill();
     };
   }, []);
 
