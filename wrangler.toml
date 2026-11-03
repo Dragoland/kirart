@@ -6,7 +6,7 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "kirart-db"
-database_id = "PEGA_AQUI_EL_ID_DE_D1"
+database_id = "fabd14a0-e92b-4a70-bf70-f204dc0ba14a"
 
 # 2) npx wrangler r2 bucket create kirart-images
 [[r2_buckets]]
