@@ -1,0 +1,14 @@
+name = "kirart"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+# 1) npx wrangler d1 create kirart-db   -> pega aquí el database_id que te devuelve
+[[d1_databases]]
+binding = "DB"
+database_name = "kirart-db"
+database_id = "PEGA_AQUI_EL_ID_DE_D1"
+
+# 2) npx wrangler r2 bucket create kirart-images
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "kirart-images"

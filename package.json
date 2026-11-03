@@ -1,12 +1,16 @@
 {
   "name": "kirart-web",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:local": "wrangler d1 execute kirart-db --local --file=schema.sql",
+    "db:remote": "wrangler d1 execute kirart-db --remote --file=schema.sql",
+    "cf:dev": "vite build && wrangler pages dev dist",
+    "cf:deploy": "vite build && wrangler pages deploy dist --project-name=kirart"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -14,7 +18,6 @@
     "react-router-dom": "^7.0.0",
     "react-markdown": "^9.0.0",
     "remark-gfm": "^4.0.0",
-    "gray-matter": "^4.0.3",
     "gsap": "^3.12.0",
     "lucide-react": "^0.460.0",
     "class-variance-authority": "^0.7.0",
@@ -57,6 +60,7 @@
     "vaul": "^1.1.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",
@@ -64,6 +68,7 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.0",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "wrangler": "^4.0.0"
   }
 }
